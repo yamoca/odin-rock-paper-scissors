@@ -1,18 +1,56 @@
-console.log("hello world");
-// let answer = prompt("type smth: ");
-//console.log(answer);
+let humanScore = 0;
+let computerScore = 0;
 
-let objects = ["rock", "paper", "scissors"];
 
 function getComputerChoice() {
     let rand = Math.random();
     if (rand <= 0.3) {
-        return objects[0];
+        return "rock";
     } else if (rand > 0.3 && rand <= 0.6) {
-        return objects[1];
+        return "paper";
     } else {
-        return objects[2];
+        return "scissors";
     }
 }
 
-alert(getComputerChoice());
+function getHumanChoice() {
+    let playerChoice = prompt("input your choice: (rock, paper, scissors)");
+    return playerChoice.trim().toLowerCase()
+}
+
+// could create an object where there is a key for each choice (rock paper scissors) and the value for that key is the choice which beats it (e.g rock: 'scissors',)
+
+function playRound() {
+    const humanChoice = getHumanChoice();
+    const computerChoice = getComputerChoice();
+    if (humanChoice == computerChoice) {
+        alert("Draw! You both chose " + humanChoice);
+    } else if (
+        (humanChoice == "rock" && computerChoice == "scissors") ||
+        (humanChoice == "paper" && computerChoice == "rock") ||
+        (humanChoice == "scissors" && computerChoice == "paper")
+    ) {
+        alert("Win! " + humanChoice + " beats " + computerChoice);
+        humanScore += 1;
+    } else {
+        alert("Lose! " + humanChoice + " loses to " + computerChoice);
+        computerScore += 1;
+    }
+}
+
+function playGame() {
+    playRound();
+    playRound();
+    playRound();
+    playRound();
+    playRound();
+    if (humanScore > computerScore) {
+        alert("Congrats, you win! (" + humanScore.toString() + ":" + computerScore.toString() + ")")
+    } else if (computerScore > humanScore) {
+        alert("Unlucky, you lost! (" + humanScore.toString() + ":" + computerScore.toString() + ")")
+    } else {
+        alert("Wow, you drew! Play again to find the champion (" + humanScore.toString() + ":" + computerScore.toString() + ")")
+    } 
+}
+
+playGame();
