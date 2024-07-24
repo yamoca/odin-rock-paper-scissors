@@ -2,6 +2,18 @@ let humanScore = 0;
 let computerScore = 0;
 
 
+const buttons = document.querySelectorAll("button")
+const results = document.querySelector("div");
+const scorep = document.querySelector("p");
+
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+        playRound(button.id, getComputerChoice());
+    });
+});
+
+
+
 function getComputerChoice() {
     let rand = Math.random();
     if (rand <= 0.3) {
@@ -13,37 +25,61 @@ function getComputerChoice() {
     }
 }
 
-function getHumanChoice() {
-    let playerChoice = prompt("input your choice: (rock, paper, scissors)");
-    return playerChoice.trim().toLowerCase()
-}
-
 // could create an object where there is a key for each choice (rock paper scissors) and the value for that key is the choice which beats it (e.g rock: 'scissors',)
 
-function playRound() {
-    const humanChoice = getHumanChoice();
-    const computerChoice = getComputerChoice();
+function playRound(humanChoice, computerChoice) {
     if (humanChoice == computerChoice) {
-        alert("Draw! You both chose " + humanChoice);
+        draw(humanChoice);
     } else if (
         (humanChoice == "rock" && computerChoice == "scissors") ||
         (humanChoice == "paper" && computerChoice == "rock") ||
         (humanChoice == "scissors" && computerChoice == "paper")
     ) {
-        alert("Win! " + humanChoice + " beats " + computerChoice);
-        humanScore += 1;
+        win(humanChoice, computerChoice);
     } else {
-        alert("Lose! " + humanChoice + " loses to " + computerChoice);
-        computerScore += 1;
+        lose(humanChoice, computerChoice);
     }
 }
 
+function win(humanChoice, computerChoice) {
+    results.replaceChildren();
+    const winMsg = document.createElement("h1");
+    winMsg.textContent = `Congrats you won, ${humanChoice} beats ${computerChoice}!`;
+
+    results.appendChild(winMsg);
+    
+    humanScore += 1;
+    scorep.textContent = `current score is ${humanScore}:${computerScore}`
+}
+
+function draw(humanChoice) {
+    results.replaceChildren();
+    const drawMsg = document.createElement("h1");
+    drawMsg.textContent = `You drew, you both played ${humanChoice}`;
+
+    results.appendChild(drawMsg);
+    scorep.textContent = `current score is ${humanScore}:${computerScore}`
+}
+
+function lose(humanChoice, computerChoice) {
+    results.replaceChildren();
+    const loseMsg = document.createElement("h1");
+    loseMsg.textContent = `Unlucky, you lost, ${computerChoice} beats ${humanChoice}!`;
+
+    results.appendChild(loseMsg);
+    
+    computerScore += 1;
+    scorep.textContent = `current score is ${humanScore}:${computerScore}`
+}
+
+
+
+
 function playGame() {
-    playRound();
-    playRound();
-    playRound();
-    playRound();
-    playRound();
+    for (let i = 0; i <= 5; i++) {
+        playRound();
+    }
+
     if (humanScore > computerScore) {
         alert("Congrats, you win! (" + humanScore.toString() + ":" + computerScore.toString() + ")")
     } else if (computerScore > humanScore) {
@@ -53,4 +89,4 @@ function playGame() {
     } 
 }
 
-playGame();
+// playGame();
